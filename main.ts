@@ -21,7 +21,7 @@ Deno.serve(async (req: Request) => {
 
     if (!supabaseUrl || !supabaseAnonKey) {
       return new Response(
-        JSON.stringify({ error: "Missing x-supabase-url or x-supabase-anon-key headers" }),
+        JSON.stringify({ error: "Missing useful headers." }),
         {
           status: 400,
           headers: { "Content-Type": "application/json" },
