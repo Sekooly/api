@@ -1,0 +1,6 @@
+{
+  "tasks": {
+    "start": "deno run --allow-net main.ts",
+    "deploy": "deno deploy --project=supabase-proxy main.ts"
+  }
+}
