@@ -7,7 +7,7 @@ Deno.serve(async (req: Request) => {
       status: 204,
       headers: {
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+        "Access-Control-Allow-Methods": "GET, POST, PATCH, OPTIONS, DELETE",
         "Access-Control-Allow-Headers": "Content-Type, Authorization, x-supabase-url, x-supabase-anon-key",
         "Access-Control-Max-Age": "86400",
       },
