@@ -8,7 +8,7 @@ Deno.serve(async (req: Request) => {
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET, POST, PATCH, OPTIONS, DELETE",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization, x-supabase-url, x-supabase-anon-key",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization, x-supabase-url, x-supabase-anon-key, Content-Profile, Accept-Profile",
         "Access-Control-Max-Age": "86400",
       },
     });
@@ -64,7 +64,7 @@ Deno.serve(async (req: Request) => {
     responseHeaders.set("Access-Control-Allow-Methods", "GET, POST, PATCH, OPTIONS, DELETE");
     responseHeaders.set(
       "Access-Control-Allow-Headers",
-      "Content-Type, Authorization, x-supabase-url, x-supabase-anon-key"
+      "Content-Type, Authorization, x-supabase-url, x-supabase-anon-key, Content-Profile, Accept-Profile"
     );
 
     // Gérer le cas où la réponse n'a pas de corps (204, 304, etc.)
