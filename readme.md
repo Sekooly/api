@@ -6,6 +6,3 @@
 
 ## Allowed methods
 `GET`, `POST`, `PATCH`, `DELETE`, `OPTIONS`
-
-## Deploy new deno
-todo...
