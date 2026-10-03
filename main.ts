@@ -31,7 +31,8 @@ Deno.serve(async (req: Request) => {
 
     // --- Build target URL ---
     const url = new URL(req.url);
-    const targetUrl = `${supabaseUrl}${url.pathname}${url.search}`;
+    const cleanSupabaseUrl = supabaseUrl.replace(/\/$/, "");
+    const targetUrl = `${cleanSupabaseUrl}${url.pathname}${url.search}`;
 
     // --- Prepare headers for Supabase ---
     const headers = new Headers(req.headers);
