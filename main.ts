@@ -42,7 +42,7 @@ Deno.serve(async (req: Request) => {
     const response = await fetch(targetUrl, {
       method: req.method,
       headers: headers,
-      body: req.body,
+      body: ["GET", "HEAD"].includes(req.method) ? undefined : req.body,
     });
 
     // --- Return response with CORS ---
