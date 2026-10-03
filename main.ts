@@ -56,6 +56,9 @@ Deno.serve(async (req: Request) => {
 
     // --- Return response with CORS ---
     const responseHeaders = new Headers(response.headers);
+    responseHeaders.delete("content-encoding");
+    responseHeaders.delete("content-length");
+    responseHeaders.delete("transfer-encoding");
     responseHeaders.set("Access-Control-Allow-Origin", "*");
     responseHeaders.set("Access-Control-Allow-Methods", "GET, POST, PATCH, OPTIONS, DELETE");
     responseHeaders.set(
