@@ -36,23 +36,40 @@ Deno.serve(async (req: Request) => {
     // --- Prepare headers for Supabase ---
     const headers = new Headers(req.headers);
     headers.set("apikey", supabaseAnonKey);
-    headers.delete("host");
+    // Ne pas supprimer le host, Supabase en a besoin pour le routing
+    // headers.delete("host"); 
+    
+    // S'assurer que le Content-Type est bien transmis
+    if (req.headers.has("content-type")) {
+      headers.set("Content-Type", req.headers.get("content-type")!);
+    }
 
     // --- Forward request to Supabase ---
+    // Important : lire le body comme ArrayBuffer pour éviter les erreurs de décodage
+    const body = ["GET", "HEAD"].includes(req.method) ? undefined : await req.arrayBuffer();
+
     const response = await fetch(targetUrl, {
       method: req.method,
       headers: headers,
-      body: ["GET", "HEAD"].includes(req.method) ? undefined : req.body,
+      body: body,
     });
 
     // --- Return response with CORS ---
     const responseHeaders = new Headers(response.headers);
     responseHeaders.set("Access-Control-Allow-Origin", "*");
-    responseHeaders.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+    responseHeaders.set("Access-Control-Allow-Methods", "GET, POST, PATCH, OPTIONS, DELETE");
     responseHeaders.set(
       "Access-Control-Allow-Headers",
       "Content-Type, Authorization, x-supabase-url, x-supabase-anon-key"
     );
+
+    // Gérer le cas où la réponse n'a pas de corps (204, 304, etc.)
+    if (response.status === 204 || response.status === 304) {
+      return new Response(null, {
+        status: response.status,
+        headers: responseHeaders,
+      });
+    }
 
     return new Response(response.body, {
       status: response.status,
@@ -61,7 +78,7 @@ Deno.serve(async (req: Request) => {
   } catch (error) {
     console.error("Proxy error:", error);
     return new Response(
-      JSON.stringify({ error: "Internal Proxy Error" }),
+      JSON.stringify({ error: "Internal Proxy Error", details: error.message }),
       {
         status: 500,
         headers: { "Content-Type": "application/json" },
